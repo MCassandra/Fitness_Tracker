@@ -12,14 +12,14 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const databaseUrl = "fitnesstracker";
+const databaseUrl = "workout";
 const collections = ["exercises"];
 
 const db = mongojs(databaseUrl, collections);
 
 
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnesstracker", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
@@ -29,9 +29,7 @@ db.on("error", error => {
     console.log("Database Error:", error);
   });
 
-app.get("/", (req, res) =>{
-    res
-})
+
   
   app.get("/", (req, res) => {
     res.send("Hello world");
@@ -47,7 +45,7 @@ app.get("/", (req, res) =>{
     });
   });
   
-  app.get("/name", (req, res) => {
+  app.get("/exercise", (req, res) => {
     db.exercises.find().sort({ name: 1 }, (err, found) => {
       if (err) {
         console.log(err);
