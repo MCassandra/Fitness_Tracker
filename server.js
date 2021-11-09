@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const mongojs = require("mongojs");
+const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
@@ -32,7 +33,7 @@ db.on("error", error => {
 
   
   app.get("/", (req, res) => {
-    res.send("Hello world");
+    res.sendFile(path.join(__dirname, "./public/index.html"));
   });
   
   app.get("/all", (req, res) => {
@@ -46,24 +47,28 @@ db.on("error", error => {
   });
   
   app.get("/exercise", (req, res) => {
-    db.exercises.find().sort({ name: 1 }, (err, found) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(found);
-      }
-    });
+    res.sendFile(path.join(__dirname, "./public/exercise.html"));
+  //   db.exercises.find().sort({ name: 1 }, (err, found) => {
+  //     if (err) {
+  //       console.log(err);
+  //     } else {
+  //       res.json(found);
+  //     }
+  //   });
   });
   
-  app.get("/weight", (req, res) => {
-    db.exercises.find().sort({ weight: -1 }, (err, found) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(found);
-      }
-    });
+  app.get("/stats", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/stats.html"));
+    // db.exercises.find().sort({ weight: -1 }, (err, found) => {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     res.json(found);
+    //   }
+    // });
   });
+
+  
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
