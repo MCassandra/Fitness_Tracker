@@ -37,60 +37,64 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
-// app.get("/all", (req, res) => {
-//   db.exercises.find({}, (err, found) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.json(found);
-//     }
-//   });
-// });
 
-// get to exercises
+// get exercises
 app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
-  //   db.exercises.find().sort({ name: 1 }, (err, found) => {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       res.json(found);
-  //     }
-  //   });
+
 });
 
 // get stats
 app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/stats.html"));
-  // db.exercises.find().sort({ weight: -1 }, (err, found) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     res.json(found);
-  //   }
-  // });
+
 });
 
 // api routes
+
+
 // create a workout 
-app.post("/api/workouts/:id", (req, res) => {
-  Workout.create({ _id: req.params.id }, {
-    $push: { exercises: req.body }
-  })
+app.post("/api/workouts", ({ body }, res) => {
+  Workout.create(body)
     .then(dbWorkout => {
-      res.json(dbWorkout)
-    }).catch(err => res.json(err))
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
 });
 
-// update a workout 
-app.put("/api/workouts/:id", (req, res) => {
-  Workout.updateOne({ _id: req.params.id }, {
-    $push: { exercises: req.body }
-  })
+// add exercise
+app.put("/api/workouts/:id", ({ body }, res) => {
+  Workout.insertMany(body)
     .then(dbWorkout => {
-      res.json(dbWorkout)
-    }).catch(err => res.json(err))
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
 });
+
+// get last workout
+app.get("/api/workouts", (req, res) =>{
+  Workout.find({})
+    .sort({ _id: -1 })
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+
+// add an exercise to most recent exercise
+
+// get combined weight of multiple exercises from past 7 workouts on stats page
+
+// get total duration of each workout from past 7 workouts on stats page
+
+
 
 
 app.listen(PORT, () => {
