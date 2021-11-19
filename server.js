@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const mongojs = require("mongojs");
 const path = require("path");
-const db = require("./models");
+// const db = require("./models");
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,6 +16,7 @@ app.use(express.static("public"));
 
 const databaseUrl = "workout";
 const collections = ["exercises"];
+const db = mongojs(databaseUrl, collections);
 
 
 
@@ -48,7 +49,7 @@ app.get("/stats", (req, res) => {
 
 });
 
-require("./routes/apiRoutes")(app);
+app.use(require("./routes/apiRoutes"));
 
 
 
