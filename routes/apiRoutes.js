@@ -1,56 +1,34 @@
 const router = require("express").Router();
-var db = require("../models");
+const db = require("../models");
 
 
 // create a new workout
-router.post("/api/workouts", async (req, res) => {
-    try {
-        const response = await db.Workout.create({ type: "workout" })
-        res.json(response);
-    }
-    catch (err) {
-        console.log("eroor creating yourworkout", err)
-    }
-})
+router.post("/api/workouts", (req, res) => {
+    db.Workout.create(req.body).then((dbWorkouts) => {
+        res.json(dbWorkouts);
+    }).catch(err => {
+        res.status(400).json(err);
+    });
+});
+
+ // update the workout body by creating an exercise
+router.put("/api/workouts/:id", (req, res) => {
+    db.Workout.findByIdAndUpdate(
+      { _id: req.params.id }, { exercises: req.body }
+    ).then((dbWorkouts) => {
+      res.json(dbWorkouts);
+    }).catch(err => {
+      res.status(400).json(err);
+    });
+});
 
 
-//   add exercise to workout
-//   router.put("/api/workouts/:id", ({ body, params }, res) => {
-//     Workout.insertMany(body)
-//       .then(dbWorkout => {
-//         res.json(dbWorkout);
-//       })
-//       .catch(err => {
-//         res.status(400).json(err);
-//       });
-//   });
 
-
-router.put("/api/workouts/:id", ({ body, params }, res) => {
-    // console.log(body, params)
-    const workoutId = params.id;
-    let savedExercises = [];
-
-    // gets all the currently saved exercises in the current workout
-    db.Workout.find({ _id: workoutId })
-        .then(dbWorkout => {
-            console.log(dbWorkout)
-            savedExercises = dbWorkout[0].exercises;
-            res.json(dbWorkout[0].exercises);
-            let allExercises = [...savedExercises, body]
-            console.log(allExercises)
-            updateWorkout(allExercises)
-        })
-        .catch(err => {
-            res.json(err);
-        });
-
-})
-
+// get workout range
 router.get("/api/workouts/range", (req, res) => {
     db.Workout.find({})
-        .then(workout => {
-            res.json(workout);
+        .then(dbWorkouts => {
+            res.json(dbWorkouts);
         })
         .catch(err => {
             res.json(err);
@@ -60,8 +38,8 @@ router.get("/api/workouts/range", (req, res) => {
 // get last workout
 router.get("/api/workouts", (req, res) => {
     db.Workout.find({})
-        .then(Workout => {
-            res.json(Workout);
+        .then(dbWorkouts => {
+            res.json(dbWorkouts);
         })
         .catch(err => {
             res.status(400).json(err);
@@ -69,10 +47,41 @@ router.get("/api/workouts", (req, res) => {
 });
 
 
-// add an exercise to most recent exercise
-
-// get combined weight of multiple exercises from past 7 workouts on stats page
-
 // get total duration of each workout from past 7 workouts on stats page
+router.get("api/workouts", (req, res) => {
+    db.Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: {
+                    $sum: "$exercises.duration",
+                }
+            }
+        }
+    ])
+        .then((dbWorkouts) => {
+            res.json(dbWorkouts);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
 
-module.exports = router;
+router.get("api/workouts/range", (req, res) => {
+    db.Workout.aggregate([
+        {
+            $addFields: {
+                totalDuration: {
+                    $sum: "$exercises.duration",
+                }
+            }
+        }
+    ])
+        .then((dbWorkouts) => {
+            res.json(dbWorkouts);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+module.exports = router

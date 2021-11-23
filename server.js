@@ -1,9 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const logger = require("morgan");
-const mongojs = require("mongojs");
 const path = require("path");
-// const db = require("./models");
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,9 +13,9 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-const databaseUrl = "workout";
-const collections = ["exercises"];
-const db = mongojs(databaseUrl, collections);
+// const databaseUrl = "workout";
+// const collections = ["exercises"];
+// const db = mongojs(databaseUrl, collections);
 
 
 
@@ -25,18 +24,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useFindAndModify: false
 });
 
-// home routes routes
-// db.on("error", error => {
-//   console.log("Database Error:", error);
-// });
 
-
-// go to home page
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/index.html"));
-});
-
-
+// home routes
 // get exercises
 app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
@@ -49,8 +38,8 @@ app.get("/stats", (req, res) => {
 
 });
 
-app.use(require("./routes/apiRoutes"));
-
+// api routes
+app.use(require("./routes/apiRoutes.js"));
 
 
 app.listen(PORT, () => {
