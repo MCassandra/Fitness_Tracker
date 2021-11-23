@@ -11,16 +11,20 @@ router.post("/api/workouts", (req, res) => {
     });
 });
 
- // update the workout body by creating an exercise
+// update the workout body by creating an exercise
 router.put("/api/workouts/:id", (req, res) => {
     db.Workout.findByIdAndUpdate(
-      { _id: req.params.id }, { exercises: req.body }
-    ).then((dbWorkouts) => {
-      res.json(dbWorkouts);
-    }).catch(err => {
-      res.status(400).json(err);
-    });
+        { _id: req.params.id },
+        {
+            $push: { exercises: req.body }
+        })
+        .then((dbWorkouts) => {
+            res.json(dbWorkouts);
+        }).catch(err => {
+            res.json(err);
+        });
 });
+
 
 
 
