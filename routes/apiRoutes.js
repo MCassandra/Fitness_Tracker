@@ -31,29 +31,29 @@ router.put("/api/workouts/:id", (req, res) => {
 
 
 // get workout range
-router.get("/api/workouts/range", (req, res) => {
-    db.Workout.find({})
-        .then(dbWorkouts => {
-            res.json(dbWorkouts);
-        })
-        .catch(err => {
-            res.json(err);
-        });
-});
+// router.get("/api/workouts/range", (req, res) => {
+//     console.log("/api/workouts/range 1");
+//     db.Workout.find({})
+//         .then(dbWorkouts => {
+//             res.json(dbWorkouts);
+//         })
+//         .catch(err => {
+//             res.json(err);
+//         });
+// });
 
 // get last workout
-router.get("/api/workouts", (req, res) => {
-    console.log("/api/workouts 1");
-    // console.log("get workout")
-    db.Workout.find({})
-        .then(dbWorkouts => {
-            // console.log(dbWorkouts)
-            res.json(dbWorkouts);
-        })
-        .catch(err => {
-            res.status(400).json(err);
-        });
-});
+// router.get("/api/workouts", (req, res) => {
+//     // console.log("/api/workouts 1");
+//     db.Workout.find({})
+//         .then(dbWorkouts => {
+//             // console.log(dbWorkouts)
+//             res.json(dbWorkouts);
+//         })
+//         .catch(err => {
+//             res.status(400).json(err);
+//         });
+// });
 
 
 // get total duration of each workout from past 7 workouts on stats page
@@ -77,6 +77,7 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
+    console.log("/api/workouts/range 2");
     db.Workout.aggregate([
         {
             $addFields: {
