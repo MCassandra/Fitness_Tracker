@@ -17,14 +17,17 @@ router.put("/api/workouts/:id", (req, res) => {
         req.params.id,
         {
             $push: { exercises: req.body }
-        })
+ },
+            { new:true })
+        
         .then((dbWorkouts) => {
             console.log(dbWorkouts)
             res.json(dbWorkouts);
         }).catch(err => {
             res.json(err);
         });
-});
+ }); 
+ 
 
 
 
