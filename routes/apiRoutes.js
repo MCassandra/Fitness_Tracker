@@ -13,7 +13,6 @@ router.post("/api/workouts", (req, res) => {
 
 // update the workout body by creating an exercise
 router.put("/api/workouts/:id", (req, res) => {
-    // console.log(req.params.id)
     db.Workout.findByIdAndUpdate(
         req.params.id,
         {
@@ -58,7 +57,7 @@ router.put("/api/workouts/:id", (req, res) => {
 
 // get total duration of each workout from past 7 workouts on stats page
 router.get("/api/workouts", (req, res) => {
-    console.log("/api/workouts 2");
+    // console.log("/api/workouts 2");
     db.Workout.aggregate([
         {
             $addFields: {
@@ -77,7 +76,7 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
-    console.log("/api/workouts/range 2");
+    // console.log("/api/workouts/range 2");
     db.Workout.aggregate([
         {
             $addFields: {
