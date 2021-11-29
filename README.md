@@ -17,6 +17,17 @@ The user should be able to:
 4. View total duration of each workout from the past seven workouts on the "stats" page
 
 
+## <a href="#readme-badges"><img id="usage" src="https://github.com/teamjuli0/readme-badges/blob/main/themes/clean-dark/menu-categories/screenshots.png?raw=true" style="height: 30px"></a>
+
+![open the app and create a workout](assets/start.png)  
+![select the type of workout](assets/select.png)
+![fill out the fields and add exercise](assets/add.png)
+![click on fitnesstracker to see last workout](assets/last.png)
+![click on the dashboard to see your stats](assets/dash.png)
+
+
+
+
 GitHub Repo: https://github.com/MCassandra/Fitness_Tracker  
 
 Live app: https://warm-sierra-11269.herokuapp.com/
